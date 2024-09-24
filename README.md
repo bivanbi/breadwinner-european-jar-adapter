@@ -1,0 +1,1 @@
+# breadwinner-european-jar-adapter
