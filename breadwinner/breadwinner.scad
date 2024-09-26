@@ -22,30 +22,37 @@ module breadwinner_socket(bt = breadwinner_socket_baseplate_thickness(), wt = br
     }
 }
 
-function breadwinner_glue_aid_center_ring_baseplate_diameter() = 40.0;
-function breadwinner_glue_aid_center_ring_baseplate_thickness() = 1.0;
+function breadwinner_glue_aid_center_ring_diameter() = breadwinner_center_sensor_hole_diameter();
 function breadwinner_glue_aid_center_ring_height() = breadwinner_socket_baseplate_thickness() * 2;
-function breadwinner_glue_aid_center_ring_skirt_wall_thickness() = 1.0;
+function breadwinner_glue_aid_center_ring_wall_thickness() = 1.0;
+function breadwinner_glue_aid_center_ring_rim_overhang() = 1.0;
+function breadwinner_glue_aid_center_ring_rim_thickness() = 1.0;
 
 // To help when gluing together the Breadwinner socket with the jar lid
-module breadwinner_glue_aid_centering_ring(h = breadwinner_glue_aid_center_ring_height(), baseplate_thickness = breadwinner_glue_aid_center_ring_baseplate_thickness()) {
-    baseplate_offset_x = breadwinner_center_sensor_hole_diameter() / 2;
-    baseplate_w = breadwinner_glue_aid_center_ring_baseplate_diameter() / 2 - baseplate_offset_x;
+module breadwinner_glue_aid_centering_ring(
+    d = breadwinner_glue_aid_center_ring_diameter(),
+    h = breadwinner_glue_aid_center_ring_height(),
+    t = breadwinner_glue_aid_center_ring_wall_thickness(),
+    rim_o = breadwinner_glue_aid_center_ring_rim_overhang(),
+    rim_t = breadwinner_glue_aid_center_ring_rim_thickness()
+) {
+    rim_offset_x = d / 2 - t;
+    rim_offset_y = - rim_t;
+    rim_o = rim_o + t;
 
-    skirt_offset_x = breadwinner_center_sensor_hole_diameter() / 2 - breadwinner_glue_aid_center_ring_skirt_wall_thickness();
-    skirt_w = breadwinner_glue_aid_center_ring_skirt_wall_thickness();
+    ring_offset_x = d / 2 - t;
+    ring_w = t;
 
-    h = h + baseplate_thickness;
-    skirt_round_top_offset_x = skirt_offset_x + skirt_w / 2;
+    round_tip_offset_x = ring_offset_x + t / 2;
 
     rotate_extrude() {
         union() {
-            translate([baseplate_offset_x, 0]) square([baseplate_w, baseplate_thickness], center = false);
-            translate([skirt_offset_x, 0]) square([skirt_w, h], center = false);
-            translate([skirt_round_top_offset_x, h]) circle(d = skirt_w);
+            translate([rim_offset_x, rim_offset_y]) square([rim_o, rim_t], center = false);
+            translate([ring_offset_x, 0]) square([ring_w, h], center = false);
+            translate([round_tip_offset_x, h]) circle(d = ring_w);
         }
     }
 }
 
 color("lightblue") breadwinner_socket();
-translate([0, 0, - breadwinner_glue_aid_center_ring_baseplate_thickness()]) breadwinner_glue_aid_centering_ring();
+breadwinner_glue_aid_centering_ring();
