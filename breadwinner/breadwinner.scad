@@ -8,6 +8,8 @@ function breadwinner_center_sensor_hole_diameter() = 15.0;
 function breadwinner_socket_skirt_wall_thickness() = 1.0;
 function breadwinner_socket_baseplate_thickness() = 1.0;
 
+function breadwinner_socket_outer_diameter() = breadwinner_diameter() + 2 * breadwinner_socket_skirt_wall_thickness();
+
 module breadwinner_socket(bt = breadwinner_socket_baseplate_thickness(), wt = breadwinner_socket_skirt_wall_thickness()) {
     baseplate_w = (breadwinner_diameter() - breadwinner_center_sensor_hole_diameter()) / 2;
 
