@@ -7,7 +7,7 @@ function breadwinner_center_snap_ring_outer_diameter() = breadwinner_center_snap
 function breadwinner_center_snap_ring_rim_diameter() = breadwinner_center_snap_ring_outer_diameter() + 3.0;
 function breadwinner_center_snap_ring_rim_thickness() = breadwinner_socket_baseplate_thickness() / 2;
 function breadwinner_center_snap_ring_height() = 2.0;
-function breadwinner_center_snap_ring_hook_overhang() = 0.1;
+function breadwinner_center_snap_ring_hook_overhang() = 0.2;
 function breadwinner_center_snap_ring_number_of_cutouts() = 16;
 function breadwinner_center_snap_ring_cutout_radius() = 5;
 
