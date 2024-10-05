@@ -1,8 +1,8 @@
 use <../common/circle_sector.scad>
 use <breadwinner.scad>
 
-function breadwinner_center_snap_ring_outer_diameter() = breadwinner_center_sensor_hole_diameter();
-function breadwinner_center_snap_ring_inner_diameter() = breadwinner_center_snap_ring_outer_diameter() - 1.0;
+function breadwinner_center_snap_ring_inner_diameter() = breadwinner_center_sensor_hole_diameter();
+function breadwinner_center_snap_ring_outer_diameter() = breadwinner_center_snap_ring_inner_diameter() + 1.0;
 
 function breadwinner_center_snap_ring_rim_diameter() = breadwinner_center_snap_ring_outer_diameter() + 3.0;
 function breadwinner_center_snap_ring_rim_thickness() = breadwinner_socket_baseplate_thickness() / 2;
@@ -39,6 +39,8 @@ module breadwinner_center_snap_ring_hooks(
         }
 }
 
+// Breadwinner base plate center hole should accomodate the center snap ring thickness. Also the
+// rim should fit into a countersink hole as not to protrude from the surface of the base plate.
 module breadwinner_center_snap_ring(
     id = breadwinner_center_snap_ring_inner_diameter(),
     od = breadwinner_center_snap_ring_outer_diameter(),
