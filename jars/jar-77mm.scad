@@ -1,4 +1,5 @@
 use <../breadwinner/breadwinner.scad>
+use <jar-lid-common.scad>
 
 function jar_opening_outer_diameter() = 77.55; // 77.55mm
 function jar_thread_height() = 1.5; // protruding from the jar opening surface this much
@@ -32,45 +33,6 @@ function jar_lid_thread_elevation() = jar_thread_short_end_distance_from_top() -
 function jar_lid_thread_sin_x(d) = jar_lid_thread_elevation() / jar_lid_thread_length(d);
 function jar_lid_thread_inclination(d) = asin(jar_lid_thread_sin_x(d));
 function jar_lid_thread_inclination(d) = PI * d / jar_lid_thread_arc(); // degrees
-
-module jar_baseplate(od = jar_lid_side_wall_outer_diameter(), chd = jar_center_sensor_hole_diameter(), t = jar_lid_baseplate_thickness()) {
-    linear_extrude(height = t) {
-        difference() {
-            circle(d = od);
-            circle(d = chd);
-        }
-    }
-}
-
-module jar_lid_side_wall(
-    od = jar_lid_side_wall_outer_diameter(),
-    id = jar_lid_side_wall_inner_diameter(),
-    h = jar_side_wall_height(),
-    ribbed = true
-) {
-    rib_od = od + 1;
-    // a^^2 * 2= c^^2
-    rib_square_side = sqrt(pow(rib_od / 2, 2) * 2);
-
-    linear_extrude(height = h) {
-        union() {
-            difference() {
-                union() {
-                    //circle(d = od);
-                    if (ribbed == true) {
-                        for (i = [0 : 2 : 90])
-                        rotate([0, 0, i]) {
-                            square(rib_square_side, center = true);
-                        }
-                    } else {
-                        circle(d = od);
-                    }
-                }
-                circle(d = id);
-            }
-        }
-    }
-}
 
 module jar_lid_thread_profile() {
     linear_extrude(1)
@@ -107,8 +69,8 @@ module jar_lid(
     ribbed = true
 ) {
     union() {
-        jar_baseplate(t = bt);
-        jar_lid_side_wall(od = od, ribbed = ribbed);
+        jar_baseplate(od = od, chd = jar_center_sensor_hole_diameter(), t = bt);
+        jar_lid_side_wall(od = od, id = id, h = jar_side_wall_height(), ribbed = ribbed);
         if (threaded == true)
         for (i = [0 : jar_thread_count() - 1]) {
             angle = i * 360 / jar_thread_count();
