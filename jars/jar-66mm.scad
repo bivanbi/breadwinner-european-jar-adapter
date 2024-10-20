@@ -27,31 +27,6 @@ function jar_lid_side_wall_inner_diameter() = jar_opening_diameter_with_thread()
 function jar_lid_side_wall_outer_diameter() = max(jar_lid_side_wall_inner_diameter() + 3, breadwinner_socket_outer_diameter());
 function jar_lid_outer_diameter() = max(breadwinner_diameter(), jar_lid_side_wall_outer_diameter());
 
-function jar_lid_thread_step_distance(d, step) = PI * d / step; // step in degrees
-function jar_lid_thread_length(d) = ((d * PI) / 360) * jar_thread_short_arc();
-function jar_lid_thread_elevation() = jar_thread_short_end_distance_from_top() - jar_thread_start_distance_from_top();
-function jar_lid_thread_sin_x(d) = jar_lid_thread_elevation() / jar_lid_thread_length(d);
-function jar_lid_thread_inclination(d) = asin(jar_lid_thread_sin_x(d));
-function jar_lid_thread_inclination(d) = PI * d / jar_lid_thread_arc(); // degrees
-
-module jar_lid_thread(id = jar_lid_side_wall_inner_diameter(), bt = jar_lid_baseplate_thickness()) {
-    inclination = jar_lid_thread_inclination(id);
-    arc = jar_thread_short_arc();
-    lid_h = jar_thread_short_end_distance_from_top() - jar_thread_start_distance_from_top();
-    r = id / 2;
-    thread_square_side = sqrt(pow(jar_thread_height() / 2, 2) * 2);
-    step = 1; // degrees
-    for (i = [0 : step : arc]) {
-        x = cos(i) * r;
-        y = sin(i) * r;
-        z = (lid_h / arc) * i;
-
-        translate([0, 0, jar_thread_start_distance_from_top()]) {
-            translate([x, y, z]) rotate([90, 0, i]) rotate([-inclination, 180, 0]) jar_lid_thread_profile(w = jar_thread_width(), h = jar_thread_height());
-        }
-    }
-}
-
 module jar_lid(
     bt = jar_lid_baseplate_thickness(),
     id = jar_lid_side_wall_inner_diameter(),
@@ -65,7 +40,17 @@ module jar_lid(
         if (threaded == true)
         for (i = [0 : jar_thread_count() - 1]) {
             angle = i * 360 / jar_thread_count();
-            rotate([0, 0, angle]) jar_lid_thread();
+            rotate([0, 0, angle])
+            jar_lid_thread(
+                id = id,
+                od = od,
+                bt = jar_thread_base_thickness(),
+                tw = jar_thread_width(),
+                th = jar_thread_height(),
+                tedt = jar_thread_short_end_distance_from_top(),
+                tsdt = jar_thread_start_distance_from_top(),
+                arc = jar_thread_short_arc()
+            );
         }
     }
 }
