@@ -40,3 +40,16 @@ module jar_lid_side_wall(
         }
     }
 }
+
+module jar_lid_thread_profile(
+    w, // jar thread width
+    h // jar thread height
+) {
+    linear_extrude(1)
+    hull() {
+        square(0.1);
+        translate([0, w]) square(0.1);
+        translate([h, w / 2]) square(0.1);
+    }
+}
+

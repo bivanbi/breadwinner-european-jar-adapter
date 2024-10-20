@@ -34,15 +34,6 @@ function jar_lid_thread_sin_x(d) = jar_lid_thread_elevation() / jar_lid_thread_l
 function jar_lid_thread_inclination(d) = asin(jar_lid_thread_sin_x(d));
 function jar_lid_thread_inclination(d) = PI * d / jar_lid_thread_arc(); // degrees
 
-module jar_lid_thread_profile() {
-    linear_extrude(1)
-    hull() {
-        square(0.1);
-        translate([0, jar_thread_width()]) square(0.1);
-        translate([jar_thread_height(), jar_thread_width() / 2]) square(0.1);
-    }
-}
-
 module jar_lid_thread(id = jar_lid_side_wall_inner_diameter(), bt = jar_lid_baseplate_thickness()) {
     inclination = jar_lid_thread_inclination(id);
     arc = jar_thread_short_arc();
@@ -56,7 +47,7 @@ module jar_lid_thread(id = jar_lid_side_wall_inner_diameter(), bt = jar_lid_base
         z = (lid_h / arc) * i;
 
         translate([0, 0, jar_thread_start_distance_from_top()]) {
-            translate([x, y, z]) rotate([90, 0, i]) rotate([-inclination, 180, 0]) jar_lid_thread_profile();
+            translate([x, y, z]) rotate([90, 0, i]) rotate([-inclination, 180, 0]) jar_lid_thread_profile(w = jar_thread_width(), h = jar_thread_height());
         }
     }
 }
