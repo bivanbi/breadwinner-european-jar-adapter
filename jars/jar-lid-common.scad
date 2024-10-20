@@ -83,3 +83,6 @@ module jar_lid_thread(
         }
     }
 }
+
+linear_extrude(1)
+text("jar-lid-common.scad", size = 5, font = "Arial:style=Bold");  // we need something dummy to make task render happy
