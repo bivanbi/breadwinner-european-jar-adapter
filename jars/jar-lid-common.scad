@@ -1,3 +1,8 @@
+function jar_lid_thread_length(d, arc) = ((d * PI) / 360) * arc;
+function jar_lid_thread_elevation(sdt, edt) = edt - sdt;
+function jar_lid_thread_sin_x(sdt, edt, d, arc) = jar_lid_thread_elevation(sdt, edt) / jar_lid_thread_length(d, arc);
+function jar_lid_thread_inclination(sdt, edt, d, arc) = asin(jar_lid_thread_sin_x(sdt, edt, d, arc));
+
 module jar_baseplate(
     od, // outer diameter
     chd, // center sensor hole diameter
@@ -40,3 +45,44 @@ module jar_lid_side_wall(
         }
     }
 }
+
+module jar_lid_thread_profile(
+    w, // jar thread width
+    h // jar thread height
+) {
+    linear_extrude(1)
+    hull() {
+        square(0.1);
+        translate([0, w]) square(0.1);
+        translate([h, w / 2]) square(0.1);
+    }
+}
+
+module jar_lid_thread(
+    id, // jar_lid_side_wall_inner_diameter,
+    od, // jar_lid_side_wall_outer_diameter,
+    bt, // jar_lid_baseplate_thickness
+    tw, // jar_thread_width
+    th, // jar_thread_height
+    arc, // thead arc in degrees
+    tedt, // short end distance from top
+    tsdt // thread start distance from top
+) {
+    inclination = jar_lid_thread_inclination(sdt = tsdt, edt = tedt, d = id, arc = arc);
+    lid_h = tedt - tsdt;
+    r = id / 2;
+    thread_square_side = sqrt(pow(th / 2, 2) * 2);
+    step = 1; // degrees
+    for (i = [0 : step : arc]) {
+        x = cos(i) * r;
+        y = sin(i) * r;
+        z = (lid_h / arc) * i;
+
+        translate([0, 0, tsdt]) {
+            translate([x, y, z]) rotate([90, 0, i]) rotate([-inclination, 180, 0]) jar_lid_thread_profile(w = tw, h = th);
+        }
+    }
+}
+
+linear_extrude(1)
+text("jar-lid-common.scad", size = 5, font = "Arial:style=Bold");  // we need something dummy to make task render happy

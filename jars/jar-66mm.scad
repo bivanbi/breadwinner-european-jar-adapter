@@ -1,23 +1,23 @@
 use <../breadwinner/breadwinner.scad>
 use <jar-lid-common.scad>
 
-function jar_opening_outer_diameter() = 77.55; // 77.55mm
+function jar_opening_outer_diameter() = 66.00; // mm
 function jar_thread_height() = 1.5; // protruding from the jar opening surface this much
 function jar_thread_width() = 3.0;
-function jar_opening_diameter_with_thread() = 81.0;
+function jar_opening_diameter_with_thread() = 69.2;
 function jar_sink_direction() = "clockwise";
-function jar_thread_count() = 6;
-function jar_thread_short_long_array() = ["short", "long", "long", "short", "long", "long"]; // There are 6 threads, but there are two different thread lenghts! Order matters!
+function jar_thread_count() = 4;
+function jar_thread_short_long_array() = ["long", "long", "long", "long"]; // There are 6 threads, but there are two different thread lenghts! Order matters!
 function jar_thread_base_thickness() = 3.0;
 function jar_thread_start_distance_from_top() = 6.0; // as measured at the edge of the thread
-function jar_thread_short_end_distance_from_top() = 9.0;
-function jar_thread_long_end_distance_from_top() = 10.5;
-function jar_thread_short_arc() = 50; // degrees
-function jar_thread_long_arc() = 70; // degrees
+function jar_thread_short_end_distance_from_top() = 9.5; // uniform threads
+function jar_thread_long_end_distance_from_top() = 9.5;
+function jar_thread_short_arc() = 86; // degrees
+function jar_thread_long_arc() = 86; // degrees
 
 function jar_lid_baseplate_thickness() = 1.0;
 function jar_center_sensor_hole_diameter() = breadwinner_center_sensor_hole_diameter();
-function jar_side_wall_height() = jar_thread_long_end_distance_from_top() + 2;
+function jar_side_wall_height() = jar_thread_long_end_distance_from_top() + 4;
 
 function jar_lid_thread_median_distance_from_top() = (jar_thread_start_distance_from_top() + jar_thread_short_end_distance_from_top()) / 2;
 function jar_lid_thread_arc() = jar_thread_short_arc(); // degrees
